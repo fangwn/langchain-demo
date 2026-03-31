@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: langchain-demo
+ollama:
+  base-url: http://192.168.198.145:11434
+  model: llama2-chinese:latest
+  embedding-model: nomic-embed-text:latest
+  timeout: 60
+# DeepSeek??
+deepseek:
+  base-url: https://api.deepseek.com
+  api-key: sk-e170480978ad482bb0fcf906c4363aa4
+  model: deepseek-chat
+  timeout: 60
+  temperature: 0.7
+  max-tokens: 10000
+aliyun:
+  tongyi:
+    base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+    api-key: sk-a574d8a14e8b470a95f27e0a6c08c8b3
+    model: qwen3-max
+    embeddingModel: text-embedding-v4
+    timeout: 60
+    temperature: 0.7
+    max-tokens: 10000
