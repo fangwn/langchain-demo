@@ -26,6 +26,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+      # maven缓存，不加的话每次都会去重新拉取，会影响速度
+      - name: Dependies Cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
@@ -34,13 +42,15 @@ jobs:
       - name: Build with maven
         # 执行build命令
         run: mvn -B clean package -DskipTests --file pom.xml
-      - name: Login docker hub
-        env:
-          DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-        # 指定login命令登录hub.docker.com，帐号和密码已经在GitHub网页中配置好了
-        run: |
-          echo "${DOCKER_PASSWORD}" | docker login --username ${DOCKER_USERNAME} --password-stdin registry.cn-hangzhou.aliyuncs.com
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: repo/image
+          tags: v1, latest
+          registry: registry.cn-hangzhou.aliyuncs.com
+          dockerfile: Dockerfile
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
       - name: Set up Docker Buildx
         # 使用buildx来构建镜像，这个工具功能很丰富
         uses: crazy-max/ghaction-docker-buildx@v1
