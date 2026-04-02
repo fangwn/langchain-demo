@@ -46,7 +46,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
           image: k8s-fang/langchain-demo
-          tags: v1, latest
+          tags: ${{ github.event.commits[0].id }}
           registry: registry.cn-hangzhou.aliyuncs.com
           dockerfile: Dockerfile
           username: ${{ secrets.username }}
