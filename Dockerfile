@@ -6,5 +6,4 @@ WORKDIR application
 ARG JAR_FILE=target/*.jar
 # 将编译构建得到的jar文件复制到镜像空间中
 COPY ${JAR_FILE} application.jar
-RUN ls 
-RUN java -jar application.jar
+ENTRYPOINT ["java", "-jar", "application.jar"]
