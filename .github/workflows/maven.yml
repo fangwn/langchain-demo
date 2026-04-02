@@ -45,24 +45,9 @@ jobs:
       - name: Build & push Docker image
         uses: mr-smithers-excellent/docker-build-push@v6
         with:
-          image: k8s-fang/langchain-demo:1.0.0
+          image: k8s-fang/langchain-demo
           tags: v1, latest
           registry: registry.cn-hangzhou.aliyuncs.com
           dockerfile: Dockerfile
           username: ${{ secrets.username }}
           password: ${{ secrets.password }}
-      - name: Set up Docker Buildx
-        # 使用buildx来构建镜像，这个工具功能很丰富
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          buildx-version: latest
-      - name: Build dockerfile (with push)
-        # 构建镜像，用buildx可以同时构建X86和ARM架构的镜像，然后推送到hub.docker.com
-        run: |
-          cd demowebapp && \
-          fullCommit="${{ github.event.commits[0].id }}" && \
-          docker buildx build \
-          --platform=linux/amd64,linux/arm/v7,linux/arm64 \
-          --output "type=image,push=true" \
-          --file ./Dockerfile . \
-          --tag bolingcavalry/demowebapp-docker:"${fullCommit: 0: 7}"
