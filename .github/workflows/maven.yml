@@ -31,9 +31,6 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         # 将GTIHUB的信息都打印出来，后面的脚本可以使用这些信息，例如后面的镜像TAG用的就是这里面的commitid
         run: echo "Hello ${{ github.event.commits[0].id }}"
-      - name: Grant execute permission for maven
-        # 给gradlew可执行权限
-        run: chmod +x mvn
       - name: Build with maven
         # 执行build命令
         run: mvn -B package --file pom.xml
