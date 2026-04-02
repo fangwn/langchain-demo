@@ -34,9 +34,6 @@ jobs:
       - name: Build with maven
         # 执行build命令
         run: mvn -B clean package -DskipTests --file pom.xml
-      - name: Extract files from jar
-        # 从构建好的jar中提取制作镜像所需的内容，例如依赖jar、class、配置文件等
-        run: mkdir -p demowebapp/build/dependency && (cd demowebapp/build/dependency; jar -xf ../libs/*.jar)
       - name: Login docker hub
         env:
           DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
